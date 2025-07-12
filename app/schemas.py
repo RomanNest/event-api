@@ -20,7 +20,7 @@ class UserOut(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class EventBase(BaseModel):
@@ -39,7 +39,7 @@ class EventOut(EventBase):
     owner_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class BookingCreate(BaseModel):
@@ -53,7 +53,7 @@ class BookingOut(BaseModel):
     seats_booked: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):
