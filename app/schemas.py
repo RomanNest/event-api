@@ -26,7 +26,7 @@ class UserOut(BaseModel):
 class EventBase(BaseModel):
     title: str
     description: str | None = None
-    date: datetime
+    datetime: datetime
     max_seats: int
 
 
@@ -54,6 +54,10 @@ class BookingOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class BookingRequest(BaseModel):
+    seats_booked: int
 
 
 class Token(BaseModel):
