@@ -26,7 +26,7 @@ class Event(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    datetime = Column(DateTime, nullable=False)
+    datetime = Column(DateTime(timezone=True), nullable=False)
     max_seats = Column(Integer, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
