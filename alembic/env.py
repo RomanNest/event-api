@@ -1,15 +1,12 @@
 import asyncio
 from logging.config import fileConfig
-from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.orm import declarative_base
 
 from alembic import context
 import os
 from dotenv import load_dotenv
 
 from app.database import Base  # Base = declarative_base()
-from app.models import User, Event, Booking  # щоб Alembic "побачив" таблиці
 
 
 # Load .env
@@ -22,7 +19,9 @@ config = context.config
 fileConfig(config.config_file_name)
 
 # Get DB URL from env
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL").replace(
+    "postgresql://", "postgresql+asyncpg://"
+)
 
 target_metadata = Base.metadata
 
@@ -45,15 +44,17 @@ def run_migrations_online():
 
     async def run_migrations():
         async with connectable.connect() as connection:
+
             def do_run_migrations(conn):
-                context.configure(connection=conn, target_metadata=target_metadata)
+                context.configure(
+                    connection=conn, target_metadata=target_metadata
+                )
                 with context.begin_transaction():
                     context.run_migrations()
 
             await connection.run_sync(do_run_migrations)
 
     asyncio.run(run_migrations())
-
 
 
 if context.is_offline_mode():
