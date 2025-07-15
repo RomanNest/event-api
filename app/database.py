@@ -13,17 +13,16 @@ DATABASE_URL = os.getenv("DATABASE_URL").replace(
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 
+print("ASYNC engine created:", engine)
+
+
 AsyncSessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-    class_=AsyncSession
+    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
 )
 
 Base = declarative_base()
 
 
-@asynccontextmanager
 async def get_async_session() -> AsyncSession:
     async with AsyncSessionLocal() as session:
         yield session
